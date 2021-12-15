@@ -1,10 +1,31 @@
+/* eslint-disable prettier/prettier */
 <template>
-  <h2>Hello World</h2>
+  <HeaderSection />
+  <HomeBanner />
+  <MyProducts :products="productsFetched" />
 </template>
 
 <script>
+import { handler } from "../netlify/functions/getProducts";
+import MyProducts from "./components/Products.vue";
+import HeaderSection from "./components/Header.vue";
+import HomeBanner from "./components/Banner.vue";
 export default {
   name: "App",
+  components: {
+    HeaderSection,
+    MyProducts,
+    HomeBanner,
+  },
+  data() {
+    return {
+      productsFetched: [],
+    };
+  },
+  async created() {
+    this.productsFetched = (await handler()).body;
+    console.log((await handler()).body);
+  },
 };
 </script>
 
@@ -15,6 +36,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
-  /* margin-top: 60px; */
+  margin-top: -10px;
 }
 </style>
